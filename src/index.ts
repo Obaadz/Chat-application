@@ -1,0 +1,36 @@
+import config from "config";
+import cors from "cors";
+import express from "express";
+import { createServer } from "http";
+import v1Routes from "./routes/v1/index";
+import SocketServer from "./socket";
+
+/* Config variables */
+const port = config.get<number>("port"),
+  host = config.get<string>("host");
+
+/* Server handling */
+const app = express(),
+  httpServer = createServer(app);
+
+/* Create socket server */
+new SocketServer(httpServer);
+
+/* Express configuration for the body of the request */
+const bodyParser = {
+  urlencoded: express.urlencoded({ limit: "10mb", extended: true }),
+  json: express.json({ limit: "10mb" }),
+};
+
+/* Apply Express middleware for body parsing and CORS handling */
+app.use(bodyParser.urlencoded);
+app.use(bodyParser.json);
+app.use(cors());
+
+/* Apply routes versioning to the express application */
+app.use(v1Routes);
+
+/* Start Listening */
+httpServer.listen(port, () => {
+  console.log(`Server is listening on ${host}:${port}`);
+});
