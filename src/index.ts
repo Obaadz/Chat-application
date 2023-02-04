@@ -4,6 +4,7 @@ import express from "express";
 import { createServer } from "http";
 import v1Routes from "./routes/v1/index";
 import SocketServer from "./socket";
+import MySQL from "./utils/mySQL";
 
 /* Config variables */
 const port = config.get<number>("port"),
@@ -30,7 +31,16 @@ app.use(cors());
 /* Apply routes versioning to the express application */
 app.use(v1Routes);
 
+/* Sync database models changes */
+MySQL.connect()
+  .then(async () => {
+    await MySQL.sync();
+  })
+  .finally(async () => {
+    await MySQL.disconnect();
+  });
+
 /* Start Listening */
-httpServer.listen(port, () => {
+httpServer.listen(port, async () => {
   console.log(`Server is listening on ${host}:${port}`);
 });
