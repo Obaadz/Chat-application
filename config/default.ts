@@ -7,4 +7,5 @@ export default {
     username: "obadaa",
     password: "1353",
   },
+  secret: "dXLteE0NFM",
 };
