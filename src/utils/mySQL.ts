@@ -17,6 +17,7 @@ export default class MySQL {
       define: {
         underscored: true,
       },
+      logging: false,
     }
   );
   static readonly models = new ModelsHandler(MySQL.sequelize);
