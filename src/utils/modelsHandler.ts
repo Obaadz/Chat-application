@@ -1,16 +1,16 @@
-import { ModelStatic, Sequelize } from "sequelize";
+import { Model, ModelStatic, Sequelize } from "sequelize";
 import userModel from "../models/user";
 import roomModel from "../models/room";
 import messageModel from "../models/message";
 import participantModel from "../models/participant";
 
 export default class ModelsHandler {
-  User: ModelStatic<any>;
-  Room: ModelStatic<any>;
-  Message: ModelStatic<any>;
-  Participant: ModelStatic<any>;
+  User: ModelStatic<Model>;
+  Room: ModelStatic<Model>;
+  Message: ModelStatic<Model>;
+  Participant: ModelStatic<Model>;
 
-  constructor(private sequelize: Sequelize) {
+  constructor(sequelize: Sequelize) {
     this.User = sequelize.define(userModel.name, userModel.attributes);
     this.Room = sequelize.define(roomModel.name, roomModel.attributes);
     this.Message = sequelize.define(messageModel.name, messageModel.attributes);
