@@ -32,13 +32,7 @@ app.use(cors());
 app.use(v1Routes);
 
 /* Sync database models changes */
-MySQL.connect()
-  .then(async () => {
-    await MySQL.sync();
-  })
-  .finally(async () => {
-    await MySQL.disconnect();
-  });
+// MySQL.sync();
 
 /* Start Listening */
 httpServer.listen(port, async () => {

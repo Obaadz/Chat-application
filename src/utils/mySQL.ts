@@ -7,7 +7,7 @@ const host = config.get<string>("host"),
   db = config.get<{ name: string; username: string; password: string }>("db");
 
 export default class MySQL {
-  static readonly sequelize: Sequelize = new Sequelize(
+  static sequelize: Sequelize = new Sequelize(
     db.name,
     db.username,
     db.password || undefined,
@@ -17,43 +17,15 @@ export default class MySQL {
       define: {
         underscored: true,
       },
-      logging: false,
     }
   );
   static readonly models = new ModelsHandler(MySQL.sequelize);
-  static isConnected: boolean = false;
-
-  static async connect() {
-    if (MySQL.isConnected) return true;
-
-    try {
-      await MySQL.sequelize.authenticate();
-
-      return (MySQL.isConnected = true);
-    } catch (err: any) {
-      console.log("Error while connecting to Database: " + err.message);
-
-      return (MySQL.isConnected = false);
-    }
-  }
-
-  static async disconnect() {
-    if (!MySQL.isConnected) return;
-
-    await MySQL.sequelize.close();
-
-    MySQL.isConnected = false;
-  }
 
   static async sync() {
-    if (!MySQL.isConnected) throw new Error("Database is not connected...");
-
     await MySQL.sequelize.sync({ alter: true });
   }
 
   static async dropAllTables() {
-    if (!MySQL.isConnected) throw new Error("Database is not connected...");
-
     await MySQL.sequelize.drop();
   }
 }
