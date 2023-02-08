@@ -1,24 +1,29 @@
-import { Model, ModelStatic, Sequelize } from "sequelize";
+import type { Model, ModelStatic, Sequelize } from "sequelize";
+import type DefineModel from "../types/defineModel";
+import type { UserModel } from "../types/user";
+import type { RoomModel } from "../types/room";
+import type { MessageModel } from "../types/message";
+import type { ParticipantModel } from "../types/participant";
+import type { ImageModel } from "../types/image";
 import userModel from "../models/user";
 import roomModel from "../models/room";
 import messageModel from "../models/message";
 import participantModel from "../models/participant";
+import imageModel from "../models/image";
 
 export default class ModelsHandler {
-  User: ModelStatic<Model>;
-  Room: ModelStatic<Model>;
-  Message: ModelStatic<Model>;
-  Participant: ModelStatic<Model>;
+  User: ModelStatic<UserModel>;
+  Room: ModelStatic<RoomModel>;
+  Message: ModelStatic<MessageModel>;
+  Participant: ModelStatic<ParticipantModel>;
+  Image: ModelStatic<ImageModel>;
 
-  constructor(sequelize: Sequelize) {
-    this.User = sequelize.define(userModel.name, userModel.attributes);
-    this.Room = sequelize.define(roomModel.name, roomModel.attributes);
-    this.Message = sequelize.define(messageModel.name, messageModel.attributes);
-    this.Participant = sequelize.define(
-      participantModel.name,
-      participantModel.attributes,
-      participantModel.options
-    );
+  constructor(private sequelize: Sequelize) {
+    this.User = this.defineModel(userModel);
+    this.Room = this.defineModel(roomModel);
+    this.Message = this.defineModel(messageModel);
+    this.Participant = this.defineModel(participantModel);
+    this.Image = this.defineModel(imageModel);
 
     /* Associations */
     this.User.belongsToMany(this.Room, { through: this.Participant });
@@ -29,5 +34,12 @@ export default class ModelsHandler {
 
     this.User.hasMany(this.Message);
     this.Message.belongsTo(this.User);
+
+    this.Message.hasOne(this.Image);
+    this.Image.belongsTo(this.Message);
+  }
+
+  private defineModel<M extends Model>(model: DefineModel<M>) {
+    return this.sequelize.define<M>(model.name, model.attributes, model.options);
   }
 }

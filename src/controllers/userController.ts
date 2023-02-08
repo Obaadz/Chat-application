@@ -17,7 +17,7 @@ export default class UserController {
           "The token provided is invalid or does not include the necessary 'id' property"
         );
 
-      if (userIdParams !== user.id)
+      if (Number(userIdParams) !== user.id)
         throw new Error(`You don't have access to see user (${userIdParams}) chats`);
 
       const chats = await getAllUserChatsById(userIdParams);

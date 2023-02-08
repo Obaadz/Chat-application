@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
+import DefineModel from "../types/defineModel";
+import { UserModel } from "../types/user";
 
-const userModel = {
+const userModel: DefineModel<UserModel> = {
   name: "user",
   attributes: {
     first_name: DataTypes.STRING,
@@ -15,6 +17,7 @@ const userModel = {
       allowNull: false,
     },
   },
+  options: { timestamps: false },
 };
 
 export default userModel;
