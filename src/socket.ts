@@ -3,7 +3,8 @@ import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
 
 /* Config variables */
-const corsOrigin = config.get<string>("corsOrigin") || "*";
+const corsOrigin = config.get<string>("corsOrigin") || "*",
+  maxBufferSize = config.get<number>("maxBufferSize");
 
 /**
  * SocketServer class for creating and managing Socket.io server.
@@ -15,8 +16,10 @@ export default class SocketServer {
 
   constructor(httpServer: HttpServer) {
     console.log("Creating new Socket server...");
+
     SocketServer.instance = this;
     this.io = new Server(httpServer, {
+      maxHttpBufferSize: maxBufferSize,
       cors: {
         origin: corsOrigin,
         credentials: false,

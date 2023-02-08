@@ -8,4 +8,5 @@ export default {
     password: "1353",
   },
   secret: "dXLteE0NFM",
+  maxBufferSize: 5e6, // 5MB
 };
