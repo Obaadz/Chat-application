@@ -15,7 +15,7 @@ const app = express(),
   httpServer = createServer(app);
 
 /* Create socket server */
-new SocketServer(httpServer);
+SocketServer.initalize(httpServer);
 
 /* Express configuration for the body of the request */
 const bodyParser = {
