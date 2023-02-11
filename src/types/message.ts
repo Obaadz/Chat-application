@@ -8,3 +8,7 @@ type Message = {
 export interface MessageModel
   extends Model<InferAttributes<MessageModel>, InferCreationAttributes<MessageModel>>,
     Optional<Message, "id"> {}
+
+export type MessageFromSocket = Partial<Omit<Message, "id">> & {
+  user_id?: string;
+};
