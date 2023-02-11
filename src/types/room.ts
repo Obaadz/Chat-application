@@ -1,7 +1,7 @@
 import { InferAttributes, InferCreationAttributes, Model, Optional } from "sequelize";
 
-type Room = {
-  id: number;
+export type Room = {
+  id: string | number;
 };
 
 export interface RoomModel

@@ -2,7 +2,8 @@ import MySQL from "../utils/mySQL";
 
 const { models } = MySQL;
 
-export async function getAllUserChatsById(id: string) {
+/* Retrieve chats with messages for a user by its id */
+export async function getAllUserChatsById(id: string | number) {
   const chats = await models.Room.findAll({
     attributes: ["id"],
     include: [
