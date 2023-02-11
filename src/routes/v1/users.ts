@@ -1,9 +1,9 @@
 import express from "express";
 import UserController from "../../controllers/userController";
-import jwtAuth from "../../middleware/jwtAuth";
+import { jwtAuthExpress } from "../../middleware/jwtAuth";
 
 const usersRoutes = express.Router();
 
-usersRoutes.get("/users/:id/chats", jwtAuth, UserController.getAllChatsById);
+usersRoutes.get("/users/:id/chats", jwtAuthExpress, UserController.getAllChatsById);
 
 export default usersRoutes;
